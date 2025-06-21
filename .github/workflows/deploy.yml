@@ -1,0 +1,48 @@
+name: Auto Deploy to EC2 via Nginx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: SSH and Deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        script: |
+          # Update & install nginx
+          sudo apt update -y
+          sudo apt install nginx -y
+
+          # Ensure nginx is running
+          sudo systemctl start nginx
+          sudo systemctl enable nginx
+
+          # Clean default page
+          sudo rm -f /var/www/html/index.nginx-debian.html
+
+          # Clone the repo (if not already)
+          if [ ! -d "/var/www/html/.git" ]; then
+            sudo rm -rf /var/www/html/*
+            sudo git clone https://github.com/${{ github.repository }} /var/www/html
+          else
+            cd /var/www/html
+            sudo git pull origin main
+          fi
+
+          # Fix permissions
+          sudo chown -R www-data:www-data /var/www/html
+
+          # Reload nginx
+          sudo systemctl reload nginx
