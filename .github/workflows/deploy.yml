@@ -44,5 +44,5 @@ jobs:
           # Fix permissions
           sudo chown -R www-data:www-data /var/www/html
 
-          # Reloaded nginx
+          # Reload nginx
           sudo systemctl reload nginx
