@@ -17,14 +17,27 @@ GitHub repository is automatically deployed to a configured EC2 server via SSH.
 
 ## Deployment Architecture
 
+![GitHub Actions](screenshots/website%20to%20AWS%20EC2%20using%20Github%20Actions.drawio%20%281%29.png)
+
+##  Set Up Your AWS EC2 Instance
+- Launch an Ubuntu EC2 instance.
+- Allow inbound HTTP (port 80) and SSH (port 22) in your security group.
+- Generate or download your .pem key securely.
+
+## Prepare Your Website Repo
+The structure of your basic website can look like this
+my-website/
+│
+├── index.html
+├── styles.css
+└── .github/
+ └── workflows/
+ └── deploy.yml
+However, mine looks like what you have below because I needed something beautiful that I could tweak for myself. :)
+![](/screenshots/File%20tree.png)
 
 
-## 🚀 Features
 
-- Push to GitHub → Auto deployment to EC2
-- Nginx reverse proxy configuration
-- GitHub Actions workflow file for seamless CI/CD
-- Basic setup for security and permissions
 
 ## 📝 Medium Article
 
