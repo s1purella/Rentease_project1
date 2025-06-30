@@ -26,6 +26,7 @@ GitHub repository is automatically deployed to a configured EC2 server via SSH.
 
 ## File Structure
 The structure of your basic website can look like this
+```
 my-website/
 │
 ├── index.html
@@ -33,6 +34,7 @@ my-website/
 └── .github/
  └── workflows/
  └── deploy.yml
+```
 However, mine looks like what you have below because I needed something beautiful that I could tweak for myself. :)
 ![](/screenshots/File%20tree.png)
 
