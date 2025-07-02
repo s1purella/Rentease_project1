@@ -46,7 +46,11 @@ jobs:
 
           # Reload nginx
           sudo systemctl reload nginx
-           - name: Run Lighthouse audit on deployed site
+
+    - name: Install Lighthouse CLI
+      run: npm install -g lighthouse
+      
+    - name: Run Lighthouse audit on deployed site
       run: |
         lighthouse ${{ secrets.EC2_HOST }}
           --output html \
