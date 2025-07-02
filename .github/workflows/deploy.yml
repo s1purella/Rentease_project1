@@ -49,7 +49,7 @@ jobs:
 
     - name: Install Lighthouse CLI
       run: npm install -g lighthouse
-      
+
     - name: Run Lighthouse audit on deployed site
       run: |
         lighthouse ${{ secrets.EC2_HOST }}
@@ -59,7 +59,7 @@ jobs:
           --chrome-flags="--headless"
 
     - name: Upload Lighthouse Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: lighthouse-report
         path: lighthouse-report.html
