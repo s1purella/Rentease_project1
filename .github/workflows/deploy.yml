@@ -1,4 +1,4 @@
-name: Auto Deploy to EC2 via Nginx
+name: Auto Deploy to EC2 via Nginx!
 
 on:
   push:
@@ -46,16 +46,3 @@ jobs:
 
           # Reload nginx
           sudo systemctl reload nginx
-
-    - name: Install Lighthouse CI
-      run: npm install -g @lhci/cli
-
-    - name: Run Lighthouse CI Audit
-      run: |
-        lhci autorun --collect.url=${{ secrets.SITE_URL }}
-
-    - name: Upload Lighthouse Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: lighthouse-report
-        path: .lighthouseci/
