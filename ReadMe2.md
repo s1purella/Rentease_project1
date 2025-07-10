@@ -19,5 +19,5 @@ gap analysis in optimizing your workflow. Let's jump right into it.
  Here's a high-level architecture diagram of the setup
 ![GitHub Actions](screenshots/website%20to%20AWS%20EC2%20using%20Github%20Actions.drawio%20%281%29.png)
 
-![GitHub Actions]
+![GitHub Actions](screenshots/Monitoring%20CICD%20Architecture%20with%20prometheus%20and%20Grafana.drawio%20%281%29.png)
  
