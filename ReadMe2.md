@@ -1,0 +1,18 @@
+This serves as project2 a continuation of project1 whis is the base project, 
+it demonstrates how to monitor GitHub Actions workflows using 
+**Prometheus, Grafana, and the github-actions-exporter.** 
+
+The goal is to visualize key CI/CD metrics like:
+
+🕒 Build Duration
+❌ Failures rates
+✅ Test coverage
+
+
+Reporting, visualizing and monitoring is ideal for DevOps engineers, SREs, and security professionals 
+looking to enhance visibility over CI/CD performance. It give you a quick view to better carry out your
+gap analysis in optimizing your workflow. Let's jump right into it.
+
+ **Architecture Overview**
+ Here's a high-level architecture diagram of the setup
+ 
