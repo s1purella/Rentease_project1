@@ -1,3 +1,4 @@
+# Monitoring GitHub Actions with Prometheus and Grafana
 
 This serves as project2 a continuation of project1 whis is the base project, 
 it demonstrates how to monitor GitHub Actions workflows using 
