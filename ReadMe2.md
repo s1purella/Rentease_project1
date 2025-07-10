@@ -1,24 +1,92 @@
 # Monitoring GitHub Actions with Prometheus and Grafana
 
-This serves as project2 a continuation of project1 whis is the base project, 
-it demonstrates how to monitor GitHub Actions workflows using 
+This serves as project 2, a continuation of project 1, which is the base project. 
+It demonstrates how to monitor GitHub Actions workflows using 
 **Prometheus, Grafana, and the github-actions-exporter.** 
 
 ## Benefits
 The goal is to visualize key CI/CD metrics like:
 
-🕒 Build Duration
-❌ Failures rates
-✅ Test coverage
+1. Build Duration
+2. Failure rates
+3. Test coverage
 
 
-Reporting, visualizing and monitoring is ideal for DevOps engineers, SREs, and security professionals 
-looking to enhance visibility over CI/CD performance. It give you a quick view to better carry out your
-gap analysis in optimizing your workflow. Let's jump right into it.
+Reporting, visualizing, and monitoring are ideal for DevOps engineers, SREs, and security professionals 
+looking to enhance visibility over CI/CD performance. It gives you a quick view to carry out your
+gap analysis better in optimizing your workflow. Let's jump right into it.
 
  ## **Architecture Overview**
  Here's a high-level architecture diagram of the setup
-![GitHub Actions](screenshots/website%20to%20AWS%20EC2%20using%20Github%20Actions.drawio%20%281%29.png)
+![GitHub Actions](screenshots/Monitoring%20CICD%20Architecture%20with%20prometheus%20and%20Grafana.png)
 
-![GitHub Actions](screenshots/Monitoring%20CICD%20Architecture%20with%20prometheus%20and%20Grafana.drawio%20%281%29.png)
- 
+## Prerequisites
+1. GitHub repository with existing workflows
+2. Access to a server to run Prometheus, Grafana, and GitHub Actions Exporter
+
+ ## Step-by-step Guide
+
+Install Docker Compose 
+```bash 
+sudo apt update
+sudo apt install -y docker.io docker-compose
+sudo usermod -aG docker $USER
+newgrp docker  # Refresh group permissions
+```
+
+**Verify**
+```bash
+docker --version && docker-compose --version
+```
+Create a folder `monitoring` with two files `docker-compose.yml` and  prometheus.yml in it
+
+`docker-compose.yml` configuration code
+```bash
+version: '3.8'  # Add this line at the top
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    restart: unless-stopped
+
+  github-exporter:  # Properly indented under services
+    image: ghcr.io/labbs/github-actions-exporter:latest
+    environment:  #This worked :) 
+      - GITHUB_TOKEN= ghc_PAT_classic_token
+      - GITHUB_REPOS=jozzyjcon/Rentease_project1
+    ports:
+      - "9999:9999"
+    volumes:
+      - /home/ubuntu/monitoring/github-exporter/config.yaml:/config.yaml  # Full absolute path
+    restart: unless-stopped
+
+volumes:
+  grafana-storage:
+
+```
+`prometheus.yml` configuration below:
+```bash
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'github_actions'
+    static_configs:
+      - targets: ['github-exporter:9999']
+```
+
