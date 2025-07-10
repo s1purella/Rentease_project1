@@ -38,7 +38,7 @@ newgrp docker  # Refresh group permissions
 ```bash
 docker --version && docker-compose --version
 ```
-Create a folder `monitoring` with two files `docker-compose.yml` and  prometheus.yml in it
+***Create the folder*** `monitoring` with two files `docker-compose.yml` and  prometheus.yml in it
 
 `docker-compose.yml` configuration code
 ```bash
@@ -60,21 +60,8 @@ services:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
 
-  github-exporter:  # Properly indented under services
-    image: ghcr.io/labbs/github-actions-exporter:latest
-    environment:  #This worked :) 
-      - GITHUB_TOKEN= ghc_PAT_classic_token
-      - GITHUB_REPOS=jozzyjcon/Rentease_project1
-    ports:
-      - "9999:9999"
-    volumes:
-      - /home/ubuntu/monitoring/github-exporter/config.yaml:/config.yaml  # Full absolute path
-    restart: unless-stopped
-
-volumes:
-  grafana-storage:
-
 ```
+
 `prometheus.yml` configuration below:
 ```bash
 global:
@@ -85,8 +72,25 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'github_actions'
-    static_configs:
-      - targets: ['github-exporter:9999']
+```
+***Start the services***
+```bash
+cd ~/monitoring
+docker-compose up -d
 ```
 
+***Install GitHub Exporter***
+We'll use ghcr.io/labbs/github-actions-exporter image
+
+Create another folder with a configuration file `/github-exporter/config.yaml`
+```bash
+github:
+  token: "ghp_yourNewTokenHere"  # Create at: https://github.com/settings/tokens (repo + admin:org scopes)
+  repos:
+    - owner: "jozzyjcon"
+      name: "Rentease_project1"
+```
+***Now update your docker-compose.yml***
+```bash
+
+```
