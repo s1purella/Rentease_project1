@@ -81,8 +81,8 @@ docker-compose up -d
 
 ***Install GitHub Exporter***
 We'll use ghcr.io/labbs/github-actions-exporter image
-
 Create another folder with a configuration file `/github-exporter/config.yaml`
+
 ```bash
 github:
   token: "ghp_yourNewTokenHere"  # Create at: https://github.com/settings/tokens (repo + admin:org scopes)
@@ -93,4 +93,11 @@ github:
 ***Now update your docker-compose.yml***
 ```bash
 
+  github-exporter:  # Properly indented under services
+    image: ghcr.io/labbs/github-actions-exporter:latest
+    ports:
+      - "9999:9999"
+    volumes:
+      - /home/ubuntu/monitoring/github-exporter/config.yaml:/config.yaml  # Full absolute path
+    restart: unless-stopped
 ```
