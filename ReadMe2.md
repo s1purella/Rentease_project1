@@ -128,6 +128,9 @@ github:
 ```bash
 docker-compose down && docker-compose up -d
 ```
+***Confirm Prometheus, Grafana, and Github-actions-exporter docker containers***
+
+![](screenshots/10_The%20only%20three%20docker%20images%20I%20need.png)
 
 ***Configure Grafana***
 Access Grafana at `http://your-server-ip:3000`
