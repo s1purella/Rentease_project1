@@ -23,6 +23,8 @@ gap analysis better in optimizing your workflow. Let's jump right into it.
 ## Prerequisites
 1. GitHub repository with existing workflows
 2. Access to a server to run Prometheus, Grafana, and GitHub Actions Exporter
+3. Ensure the following ports are open
+![GitHub Actions](/screenshots/1_After_EC2_Enabled%20ports.png)
 
  ## Step-by-step Guide
 
@@ -89,6 +91,8 @@ scrape_configs:
 cd ~/monitoring
 docker-compose up -d
 ```
+Verify Prometheus is running on port `9090` 
+![](screenshots/3_Prom%20interface.png)
 
 ***Install GitHub Exporter***
 We'll use the ghcr.io/labbs/github-actions-exporter image
@@ -96,7 +100,7 @@ Create another folder with a configuration file `/github-exporter/config.yaml`
 
 ```bash
 github:
-  token: "ghp_yourNewTokenHere"  # Create at: https://github.com/settings/tokens (repo + admin:org scopes)
+  token: "ghp_yourNewTokenHere"  # Create at: https://github.com/settings/tokens (repo + admin(read):org + workflow scopes)
   repos:
     - owner: "jozzyjcon"
       name: "Rentease_project1"
@@ -128,6 +132,8 @@ docker-compose down && docker-compose up -d
 ***Configure Grafana***
 Access Grafana at `http://your-server-ip:3000`
 Login: `admin / admin` (change password when prompted)
+Verify Grafana is running on port `9090`
+![](screenshots/4_Grafana%20interface.png)
 
 ***Add Prometheus datasource***
 Collections → Data Sources → Add Prometheus
