@@ -139,3 +139,7 @@ Verify Grafana is running on port `9090`
 Collections → Data Sources → Add Prometheus
 URL: `http://<server_IP>:9090`
 
+***Create a new dashboard.*** Ensure to choose Prometheus as the Datasource
+![Github Actions](screenshots/screenshots/13_Add_Dashboard.png)
+
+Add your desired metric and configure using the most suitable graphical representations for your GitHub Actions workflows
