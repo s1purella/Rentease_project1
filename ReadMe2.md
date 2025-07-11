@@ -26,19 +26,30 @@ gap analysis better in optimizing your workflow. Let's jump right into it.
 
  ## Step-by-step Guide
 
-Install Docker Compose 
+***Install Docker Compose***
 ```bash 
 sudo apt update
-sudo apt install -y docker.io docker-compose
+sudo apt install  docker-compose -y
 sudo usermod -aG docker $USER
 newgrp docker  # Refresh group permissions
 ```
 
-**Verify**
+***Verify Docker and Docker-Compose are running***
 ```bash
 docker --version && docker-compose --version
 ```
-***Create the folder*** `monitoring` with two files `docker-compose.yml` and  prometheus.yml in it
+![Github Actions](screenshots/00Docker%20running.png)
+
+***Create the folder*** `monitoring` with two files `docker-compose.yml` and  prometheus.yml in it.
+However, the entire file structure of our project appears as follows.
+
+```bash
+monitoring/
+├── docker-compose.yml
+├── prometheus.yml
+└── github_exporter/
+    └── config.yaml
+```
 
 `docker-compose.yml` configuration code
 ```bash
@@ -80,7 +91,7 @@ docker-compose up -d
 ```
 
 ***Install GitHub Exporter***
-We'll use ghcr.io/labbs/github-actions-exporter image
+We'll use the ghcr.io/labbs/github-actions-exporter image
 Create another folder with a configuration file `/github-exporter/config.yaml`
 
 ```bash
@@ -90,7 +101,7 @@ github:
     - owner: "jozzyjcon"
       name: "Rentease_project1"
 ```
-***Now update your docker-compose.yml***
+***Update your docker-compose.yml***
 ```bash
 
   github-exporter:  # Properly indented under services
@@ -101,3 +112,24 @@ github:
       - /home/ubuntu/monitoring/github-exporter/config.yaml:/config.yaml  # Full absolute path
     restart: unless-stopped
 ```
+
+***Update*** `prometheus.yml`
+```bash
+- job_name: 'github_actions'
+  static_configs:
+    - targets: ['github-exporter:9999']
+```
+
+***Restart services***
+```bash
+docker-compose down && docker-compose up -d
+```
+
+***Configure Grafana***
+Access Grafana at `http://your-server-ip:3000`
+Login: `admin / admin` (change password when prompted)
+
+***Add Prometheus datasource***
+Collections → Data Sources → Add Prometheus
+URL: `http://<server_IP>:9090`
+
